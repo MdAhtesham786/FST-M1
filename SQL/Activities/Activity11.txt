@@ -1,0 +1,31 @@
+--Activity11--
+
+SELECT s.salesman_name,
+       s.salesman_id,
+       COUNT(o.order_no) AS total_orders
+FROM salesman s
+JOIN orders o
+    ON s.salesman_id = o.salesman_id
+GROUP BY s.salesman_name, s.salesman_id
+HAVING COUNT(o.order_no) > 1
+ORDER BY s.salesman_name;
+
+SELECT o.order_date,
+       s.salesman_id,
+       s.salesman_name,
+       o.order_no,
+       o.purchase_amount
+FROM orders o
+JOIN salesman s
+    ON o.salesman_id = s.salesman_id
+WHERE o.purchase_amount = (
+        SELECT MAX(o2.purchase_amount)
+        FROM orders o2
+        WHERE o2.order_date = o.order_date
+   )
+   OR o.purchase_amount = (
+        SELECT MIN(o2.purchase_amount)
+        FROM orders o2
+        WHERE o2.order_date = o.order_date
+   )
+ORDER BY o.order_date, o.purchase_amount DESC;

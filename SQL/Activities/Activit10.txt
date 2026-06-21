@@ -1,0 +1,28 @@
+--Activit10--
+SELECT * FROM orders
+WHERE salesman_id=(SELECT salesman_id FROM orders WHERE customer_id=3007);
+
+SELECT o.*, s.salesman_city
+FROM orders o
+INNER JOIN salesman s
+    ON o.salesman_id = s.salesman_id
+WHERE s.salesman_city = 'New York';
+
+SELECT *
+FROM customers
+WHERE grade > (
+    SELECT AVG(grade)
+    FROM customers
+    WHERE city = 'New York'
+);
+
+SELECT *
+FROM orders
+WHERE salesman_id IN (
+    SELECT salesman_id
+    FROM salesman
+    WHERE commission = (
+        SELECT MAX(commission)
+        FROM salesman
+    )
+);
